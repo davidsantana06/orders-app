@@ -13,11 +13,6 @@ obj/
 .vscode/
 *.code-workspace
 
-# Database files (SQLite)
-*.db
-*.db-shm
-*.db-wal
-
 # Environment configuration
 appsettings.Development.json
 
@@ -38,3 +33,6 @@ logs/
 # OS generated files
 .DS_Store
 Thumbs.db
+
+# Environment
+.env
