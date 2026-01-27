@@ -13,6 +13,8 @@ services:
     volumes:
       - sqlserver_data:/var/opt/mssql
       - ./database/scripts:/docker-entrypoint-initdb.d
+      - ./database/entrypoint.sh:/entrypoint.sh
+    entrypoint: /bin/bash /entrypoint.sh
     networks:
       - orders-app-network
     healthcheck:
