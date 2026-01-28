@@ -1,70 +1,76 @@
-📦 **OrdersApp** é uma solução fullstack para gerenciamento de pedidos, construída com backend .NET e frontend Angular. O projeto demonstra uma arquitetura bem estruturada, com separação clara de responsabilidades e uso de boas práticas em ambas as camadas.
+# 📦 **OrdersApp**
+
+Aplicação fullstack para gestão de pedidos. O projeto adota uma arquitetura limpa, orquestrando um backend .NET escalável com um frontend Angular focado em experiência do usuário.
+
+### 📌 Acesso Rápido
+
+| Serviço            | URL                           |
+| ------------------ | ----------------------------- |
+| **Backend API**    | http://localhost:8080         |
+| **Swagger (Docs)** | http://localhost:8080/swagger |
+| **Frontend**       | http://localhost:4200         |
 
 ## Backend (.NET 10)
 
-O backend implementa uma API REST com arquitetura em camadas:
+O núcleo da aplicação é uma API REST em .NET (C#) que prioriza a separação de responsabilidades. A estrutura divide claramente Controllers (pontos de entrada), Services (regras de negócio) e Repositories (acesso a dados).
 
-- **Controller** — Expõe endpoints HTTP e retorna respostas padronizadas.
-- **Service** — Concentra a lógica de negócios da aplicação.
-- **Repository** — Abstrai o acesso aos dados, isolando a infraestrutura.
+A persistência de dados é gerenciada pelo SQL Server. Para otimizar a performance, operações pesadas como filtros complexos e cálculos de totalização foram delegadas diretamente ao banco via Stored Procedures e Triggers. Todo o ciclo é validado por testes unitários integrados ao build.
 
-A persistência utiliza **SQL Server** rodando em container Docker. Parte da lógica foi implementada diretamente no banco:
+A execução do backend e do banco de dados requer **Docker (v27+)**.
 
-- **Stored Procedures** — Executam filtros complexos com melhor performance.
-- **Triggers** — Calculam automaticamente o valor total dos pedidos.
+## Frontend (Angular 18)
 
-O projeto inclui **DTOs** para transferência de dados e **Models** para as entidades de domínio.
+A interface utiliza Angular 18 e Material Design. Um dos destaques da implementação é a usabilidade nos filtros de pedidos: a seleção em cascata (Marca → Modelo → Ano) carrega as opções dinamicamente conforme a escolha anterior, tudo construído sobre uma arquitetura de componentes modulares.
 
-Os **testes unitários** são executados automaticamente durante o deploy do container. A **documentação interativa** (Swagger UI) fica disponível em `http://localhost:5000/swagger/index.html` após a inicialização.
-
-![C#](https://img.shields.io/badge/c%23-%23239120.svg?style=for-the-badge&logo=csharp&logoColor=white)
-![.Net](https://img.shields.io/badge/.NET-5C2D91?style=for-the-badge&logo=.net&logoColor=white)
-![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
-![MicrosoftSQLServer](https://img.shields.io/badge/Microsoft%20SQL%20Server-CC2927?style=for-the-badge&logo=microsoft%20sql%20server&logoColor=white)
-![Swagger](https://img.shields.io/badge/-Swagger-%23Clojure?style=for-the-badge&logo=swagger&logoColor=white)
-
-## Frontend (Angular 16+)
-
-A interface foi desenvolvida com **Angular** e **Material Design**, priorizando uma experiência de usuário fluida:
-
-- **Filtros Encadeados** — O usuário seleciona Marca, depois Modelo (baseado na marca) e finalmente Ano (baseado no modelo), com atualização dinâmica das opções.
-- **Exportação** — Permite baixar a listagem de pedidos em formato PDF ou Excel.
-- **Componentes Modulares** — Estrutura componentizada que facilita manutenção e reutilização.
-
-![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
-![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
-![Material Design](https://img.shields.io/badge/material%20design-757575?style=for-the-badge&logo=material%20design&logoColor=white)
-![SASS](https://img.shields.io/badge/SASS-hotpink.svg?style=for-the-badge&logo=SASS&logoColor=white)
+A execução do frontend requer o ambiente local configurado com **Node.js (v20+)** e **Angular CLI (v18+)**.
 
 ## 🛠️ Instalação e Execução
 
-A aplicação utiliza **Docker Compose** para o backend e banco de dados. O frontend é executado localmente com Node.js.
+Para iniciar, abra seu terminal na raiz do projeto.
 
-### 1️⃣ Subir Backend e Banco de Dados
+### 1️⃣ Infraestrutura (Backend e Banco)
 
-A partir do diretório `OrdersAppBackend`:
+1. Acesse o diretório do servidor:
+
+```bash
+cd OrdersAppBackend
+```
+
+2. Defina as variáveis de ambiente:
+
+```bash
+cp .env.example .env
+```
+
+3. Suba os containers. Ao finalizar (ou em outra aba), retorne ao diretório raiz:
 
 ```bash
 docker-compose up --build
+cd ..
 ```
 
-Este comando inicializa:
-- **SQL Server** (porta 1433)
-- **Backend API** (porta 5000)
+O script `database/init.sql` rodará automaticamente para preparar o banco.
 
-O banco de dados executa automaticamente o script de inicialização (`init.sql`) na primeira execução.
+### 2️⃣ Interface (Frontend)
 
-### 2️⃣ Executar o Frontend
-
-Em outro terminal, a partir do diretório raiz:
+1. Acesse o diretório da aplicação web:
 
 ```bash
 cd orders-app-frontend
-npm install
-npm start
 ```
 
-A aplicação estará disponível em `http://localhost:4200`.
+2. Defina as variáveis de ambiente:
+
+```bash
+cp .env.example .env
+```
+
+3. Instale as dependências e inicie o servidor:
+
+```bash
+npm install
+ng serve
+```
 
 ## ⚖️ Licença
 
