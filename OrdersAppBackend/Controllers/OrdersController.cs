@@ -19,7 +19,8 @@ namespace OrdersAppBackend.Controllers
         public async Task<IActionResult> GetMany(
             [FromQuery] string? make = null,
             [FromQuery] string? model = null,
-            [FromQuery] int? year = null)
+            [FromQuery] int? year = null
+        )
         {
             var orders = await _orderService.GetManyAsync(make, model, year);
             return Ok(orders);
