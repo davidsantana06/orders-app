@@ -39,24 +39,25 @@
 
     <button
       mat-raised-button
-      color="accent"
+      color="primary"
       type="button"
       (click)="onFilter()"
       [disabled]="!isFilterValid"
       style="height: 56px"
     >
-      <mat-icon>search</mat-icon>
+      <mat-icon>filter_alt</mat-icon>
       Filtrar
     </button>
 
     <button
-      mat-stroked-button
+      mat-raised-button
+      color="accent"
       type="button"
       (click)="clearFilters()"
       [disabled]="!selectedMake && !selectedModel && !selectedYear"
       style="height: 56px"
     >
-      <mat-icon>clear</mat-icon>
+      <mat-icon>refresh</mat-icon>
       Limpar Filtros
     </button>
   </mat-card-content>
