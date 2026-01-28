@@ -42,4 +42,14 @@ export class App implements OnInit {
       console.error('App: OrderListComponent não disponível para aplicar filtro!');
     }
   }
+
+  onFilterCleared(): void {
+    console.log('App: onFilterCleared chamado - carregando todos os pedidos');
+    const listComponent = this.orderList();
+    if (listComponent) {
+      listComponent.loadOrders();
+    } else {
+      console.error('App: OrderListComponent não disponível para limpar filtro!');
+    }
+  }
 }

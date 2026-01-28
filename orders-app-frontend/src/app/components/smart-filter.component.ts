@@ -3,6 +3,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 
 import { OrderItemService } from '../services';
@@ -10,7 +11,7 @@ import { OrderFilter } from '../models';
 
 @Component({
   selector: 'app-smart-filter',
-  imports: [MatCardModule, MatFormFieldModule, MatSelectModule, MatButtonModule, FormsModule],
+  imports: [MatCardModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatIconModule, FormsModule],
   templateUrl: './smart-filter.component.html',
   styles: ``,
 })
@@ -18,6 +19,7 @@ export class SmartFilterComponent implements OnInit {
   private readonly itemService = inject(OrderItemService);
 
   filterChanged = output<OrderFilter>();
+  filterCleared = output<void>();
 
   makeOptions: string[] = [];
   modelOptions: string[] = [];
@@ -92,6 +94,23 @@ export class SmartFilterComponent implements OnInit {
 
     console.log('SmartFilterComponent: Emitindo filterChanged com:', filter);
     this.filterChanged.emit(filter);
+  }
+
+  clearFilters(): void {
+    console.log('SmartFilterComponent: clearFilters() chamado');
+    
+    // Limpa todos os valores selecionados
+    this.selectedMake = undefined;
+    this.selectedModel = undefined;
+    this.selectedYear = undefined;
+    
+    // Limpa as opções dependentes
+    this.modelOptions = [];
+    this.yearOptions = [];
+    
+    console.log('SmartFilterComponent: Filtros limpos, emitindo filterCleared');
+    // Emite evento para o componente pai carregar todos os dados
+    this.filterCleared.emit();
   }
 
   get isFilterValid(): boolean {

@@ -45,7 +45,19 @@
       [disabled]="!isFilterValid"
       style="height: 56px"
     >
+      <mat-icon>search</mat-icon>
       Filtrar
+    </button>
+
+    <button
+      mat-stroked-button
+      type="button"
+      (click)="clearFilters()"
+      [disabled]="!selectedMake && !selectedModel && !selectedYear"
+      style="height: 56px"
+    >
+      <mat-icon>clear</mat-icon>
+      Limpar Filtros
     </button>
   </mat-card-content>
 </mat-card>

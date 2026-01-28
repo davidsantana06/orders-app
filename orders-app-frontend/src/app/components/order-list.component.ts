@@ -83,28 +83,37 @@ export class OrderListComponent implements OnInit {
   deleteOrder(id: number): void {
     if (!confirm('Tem certeza que deseja excluir este pedido?')) return;
 
+    console.log('OrderListComponent: Excluindo pedido ID:', id);
     this.orderService.delete(id).subscribe({
       next: () => {
+        console.log('OrderListComponent: Pedido excluído, atualizando lista');
         this.snackBar.open('Pedido excluído com sucesso!', 'Fechar', {
           duration: 3000,
         });
         this.loadOrders(this.currentFilter);
       },
-      error: (error) =>
+      error: (error) => {
+        console.error('OrderListComponent: Erro ao excluir pedido:', error);
         this.snackBar.open(`Erro ao excluir pedido: ${error.message}`, 'Fechar', {
           duration: 5000,
-        }),
+        });
+      },
     });
   }
 
   openCreateDialog(): void {
+    console.log('OrderListComponent: Abrindo dialog de criação');
     const dialogRef = this.dialog.open(OrderFormDialogComponent, {
       width: '800px',
       disableClose: true,
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result) this.loadOrders(this.currentFilter);
+      console.log('OrderListComponent: Dialog fechado com resultado:', result);
+      if (result) {
+        console.log('OrderListComponent: Pedido criado, atualizando lista');
+        this.loadOrders(this.currentFilter);
+      }
     });
   }
 
