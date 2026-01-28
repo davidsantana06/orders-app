@@ -13,6 +13,7 @@ import { OrderFilter } from './models';
 export class App implements OnInit {
   protected readonly title = signal('orders-app-frontend');
   private readonly orderList = viewChild(OrderListComponent);
+  private readonly smartFilter = viewChild(SmartFilterComponent);
 
   constructor() {
     afterNextRender(() => {
@@ -34,8 +35,19 @@ export class App implements OnInit {
 
   onFilterCleared(): void {
     const listComponent = this.orderList();
-    if (listComponent) {
-      listComponent.loadOrders();
-    }
+    if (listComponent) listComponent.loadOrders();
+  }
+
+  onOrderChanged(): void {
+    const filterComponent = this.smartFilter();
+    if (filterComponent) filterComponent.loadInitialData();
+  }
+
+  refreshData(): void {
+    const listComponent = this.orderList();
+    if (listComponent) listComponent.loadOrders();
+
+    const filterComponent = this.smartFilter();
+    if (filterComponent) filterComponent.loadInitialData();
   }
 }

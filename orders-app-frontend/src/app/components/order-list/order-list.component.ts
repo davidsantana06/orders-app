@@ -1,4 +1,11 @@
-import { Component, OnInit, inject, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  inject,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  output,
+} from '@angular/core';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,7 +18,10 @@ import { DatePipe, CurrencyPipe } from '@angular/common';
 import { OrderService } from '../../services';
 import { Order, OrderStatus, OrderFilter, OrderItem } from '../../models';
 import { OrderFormDialogComponent } from '../order-form-dialog/order-form-dialog.component';
-import { ConfirmationDialogComponent, ConfirmationDialogData } from '../confirmation-dialog/confirmation-dialog.component';
+import {
+  ConfirmationDialogComponent,
+  ConfirmationDialogData,
+} from '../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-order-list',
@@ -183,6 +193,8 @@ export class OrderListComponent implements OnInit {
   private readonly dialog = inject(MatDialog);
   private readonly cdr = inject(ChangeDetectorRef);
 
+  orderChanged = output<void>();
+
   orders: Order[] = [];
   currentFilter?: OrderFilter;
 
@@ -244,6 +256,7 @@ export class OrderListComponent implements OnInit {
             duration: 3000,
           });
           this.loadOrders(this.currentFilter);
+          this.onOrderChanged();
         },
         error: (error) => {
           console.error('Error deleting order:', error);
@@ -264,7 +277,12 @@ export class OrderListComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.loadOrders(this.currentFilter);
+        this.onOrderChanged();
       }
     });
+  }
+
+  onOrderChanged(): void {
+    this.orderChanged.emit();
   }
 }

@@ -71,6 +71,10 @@ export class SmartFilterComponent implements OnInit {
   selectedYear?: number;
 
   ngOnInit(): void {
+    this.loadInitialData();
+  }
+
+  public loadInitialData(): void {
     this.loadMakes();
   }
 
