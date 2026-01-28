@@ -1,0 +1,50 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Filtros de Busca</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content
+    style="display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; margin-top: 16px"
+  >
+    <mat-form-field appearance="outline" style="flex: 1; min-width: 200px">
+      <mat-label>Marca</mat-label>
+      <mat-select [(ngModel)]="selectedMake" (selectionChange)="onMakeChange()">
+        @for (make of makeOptions; track make) {
+          <mat-option [value]="make">{{ make }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="flex: 1; min-width: 200px">
+      <mat-label>Modelo</mat-label>
+      <mat-select
+        [(ngModel)]="selectedModel"
+        (selectionChange)="onModelChange()"
+        [disabled]="isModelDisabled"
+      >
+        @for (model of modelOptions; track model) {
+          <mat-option [value]="model">{{ model }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="flex: 1; min-width: 200px">
+      <mat-label>Ano</mat-label>
+      <mat-select [(ngModel)]="selectedYear" [disabled]="isYearDisabled">
+        @for (year of yearOptions; track year) {
+          <mat-option [value]="year">{{ year }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <button
+      mat-raised-button
+      color="accent"
+      (click)="onFilter()"
+      [disabled]="!isFilterValid"
+      style="height: 56px"
+    >
+      Filtrar
+    </button>
+  </mat-card-content>
+</mat-card>
