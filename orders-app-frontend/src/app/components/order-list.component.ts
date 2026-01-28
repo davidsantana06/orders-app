@@ -1,23 +1,25 @@
 import { Component, OnInit, inject, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { MatTableModule } from '@angular/material/table';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { DatePipe, CurrencyPipe } from '@angular/common';
 
 import { OrderService } from '../services';
-import { Order, OrderStatus, OrderFilter } from '../models';
+import { Order, OrderStatus, OrderFilter, OrderItem } from '../models';
 import { OrderFormDialogComponent } from './order-form-dialog.component';
 
 @Component({
   selector: 'app-order-list',
   imports: [
-    MatTableModule,
+    MatExpansionModule,
     MatButtonModule,
     MatIconModule,
     MatChipsModule,
+    MatDividerModule,
     MatSnackBarModule,
     DatePipe,
     CurrencyPipe,
@@ -32,8 +34,90 @@ import { OrderFormDialogComponent } from './order-form-dialog.component';
       justify-content: flex-end;
     }
 
-    .table-container {
-      overflow-x: auto;
+    .order-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      width: 100%;
+    }
+
+    .order-info {
+      display: flex;
+      gap: 24px;
+      flex: 1;
+      align-items: center;
+    }
+
+    .info-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .info-label {
+      font-size: 0.75rem;
+      color: rgba(0, 0, 0, 0.6);
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    .info-value {
+      font-size: 0.95rem;
+      font-weight: 500;
+      margin-top: 2px;
+    }
+
+    .items-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+    }
+
+    .items-table th {
+      text-align: left;
+      padding: 12px;
+      background-color: #f5f5f5;
+      font-weight: 600;
+      font-size: 0.875rem;
+      color: rgba(0, 0, 0, 0.87);
+      border-bottom: 2px solid #e0e0e0;
+    }
+
+    .items-table td {
+      padding: 12px;
+      border-bottom: 1px solid #e0e0e0;
+      font-size: 0.875rem;
+    }
+
+    .items-table tr:hover {
+      background-color: #fafafa;
+    }
+
+    .panel-actions {
+      display: flex;
+      justify-content: flex-end;
+      padding: 16px;
+      background-color: #fafafa;
+      border-top: 1px solid #e0e0e0;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 48px;
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    mat-expansion-panel {
+      margin-bottom: 16px;
+    }
+
+    mat-expansion-panel-header {
+      min-height: 80px !important;
+      height: auto !important;
+      padding: 16px 24px !important;
+    }
+
+    mat-expansion-panel-header.mat-expanded {
+      min-height: 80px !important;
     }
   `,
 })
@@ -44,7 +128,6 @@ export class OrderListComponent implements OnInit {
   private readonly cdr = inject(ChangeDetectorRef);
 
   orders: Order[] = [];
-  displayedColumns: string[] = ['id', 'orderDate', 'totalValue', 'status', 'actions'];
   currentFilter?: OrderFilter;
 
   ngOnInit(): void {
@@ -78,6 +161,10 @@ export class OrderListComponent implements OnInit {
       Concluído: 'accent',
       Cancelado: 'warn',
     }[status];
+  }
+
+  getItemSubtotal(item: OrderItem): number {
+    return item.quantity * item.unitPrice;
   }
 
   deleteOrder(id: number): void {
