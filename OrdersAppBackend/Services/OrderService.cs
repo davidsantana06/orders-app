@@ -15,7 +15,7 @@ namespace OrdersAppBackend.Services
             _orderItemRepository = orderItemRepository;
         }
 
-        public async Task<List<OrderWithItems>> GetManyAsync(
+        public async Task<List<Order>> GetManyAsync(
             string? make = null,
             string? model = null,
             int? year = null

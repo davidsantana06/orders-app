@@ -19,7 +19,7 @@ namespace OrdersAppBackend.Data.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<List<OrderWithItems>> FindManyAsync(string? make = null, string? model = null, int? year = null)
+        public async Task<List<Order>> FindManyAsync(string? make = null, string? model = null, int? year = null)
         {
             // Use Stored Procedure sp_GetOrdersWithFilters
             var makeParam = new SqlParameter("@Make", (object?)make ?? DBNull.Value);
@@ -28,8 +28,8 @@ namespace OrdersAppBackend.Data.Repositories
 
             var sql = "EXEC sp_GetOrdersWithFilters @Make, @Model, @Year";
 
-            // Execute stored procedure and map to OrderWithItems
-            var orders = new Dictionary<int, OrderWithItems>();
+            // Execute stored procedure and map to Order
+            var orders = new Dictionary<int, Order>();
 
             await using var command = _dbContext.Database.GetDbConnection().CreateCommand();
             command.CommandText = sql;
@@ -46,14 +46,14 @@ namespace OrdersAppBackend.Data.Repositories
 
                 if (!orders.ContainsKey(orderId))
                 {
-                    orders[orderId] = new OrderWithItems
+                    orders[orderId] = new Order
                     {
                         Id = orderId,
                         Status = reader.GetString(reader.GetOrdinal("Status")),
                         TotalValue = reader.GetDecimal(reader.GetOrdinal("TotalValue")),
                         CreatedAt = reader.GetDateTime(reader.GetOrdinal("OrderCreatedAt")),
                         UpdatedAt = reader.GetDateTime(reader.GetOrdinal("OrderUpdatedAt")),
-                        Items = new List<OrderItem>()
+                        OrderItems = new List<OrderItem>()
                     };
                 }
 
@@ -70,7 +70,7 @@ namespace OrdersAppBackend.Data.Repositories
                         Quantity = reader.GetInt32(reader.GetOrdinal("Quantity")),
                         UnitPrice = reader.GetDecimal(reader.GetOrdinal("UnitPrice"))
                     };
-                    orders[orderId].Items.Add(item);
+                    orders[orderId].OrderItems.Add(item);
                 }
             }
 

@@ -6,7 +6,7 @@ using OrdersAppBackend.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Get connection string from environment variable or appsettings.json
-var connectionString = builder.Configuration["CONNECTION_STRING"] 
+var connectionString = builder.Configuration["CONNECTION_STRING"]
     ?? builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<AppDbContext>(options =>
