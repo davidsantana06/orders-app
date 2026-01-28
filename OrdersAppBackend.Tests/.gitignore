@@ -1,0 +1,17 @@
+# Build outputs
+bin/
+obj/
+
+# Test Results
+TestResults/
+
+# Coverage Reports
+*.coverage
+*.coveragexml
+coverage.json
+coverage.info
+lcov.info
+
+# User-specific files
+*.user
+*.userosscache
