@@ -4,10 +4,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
 import { DatePipe, CurrencyPipe } from '@angular/common';
 
 import { OrderService } from '../services';
 import { Order, OrderStatus, OrderFilter } from '../models';
+import { OrderFormDialogComponent } from './order-form-dialog.component';
 
 @Component({
   selector: 'app-order-list',
@@ -37,6 +39,7 @@ import { Order, OrderStatus, OrderFilter } from '../models';
 export class OrderListComponent implements OnInit {
   private readonly orderService = inject(OrderService);
   private readonly snackBar = inject(MatSnackBar);
+  private readonly dialog = inject(MatDialog);
 
   orders: Order[] = [];
   displayedColumns: string[] = ['id', 'orderDate', 'totalValue', 'status', 'actions'];
@@ -80,6 +83,17 @@ export class OrderListComponent implements OnInit {
         this.snackBar.open(`Erro ao excluir pedido: ${error.message}`, 'Fechar', {
           duration: 5000,
         }),
+    });
+  }
+
+  openCreateDialog(): void {
+    const dialogRef = this.dialog.open(OrderFormDialogComponent, {
+      width: '800px',
+      disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) this.loadOrders(this.currentFilter);
     });
   }
 

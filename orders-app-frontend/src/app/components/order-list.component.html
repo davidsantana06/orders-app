@@ -1,4 +1,11 @@
 <div class="actions-container">
+  <button mat-raised-button color="primary" (click)="openCreateDialog()">
+    <mat-icon>add</mat-icon>
+    Nova Ordem
+  </button>
+
+  <div style="flex: 1;"></div>
+
   <button mat-stroked-button (click)="exportPdf()">
     <mat-icon>picture_as_pdf</mat-icon>
     Exportar PDF
