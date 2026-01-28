@@ -43,8 +43,8 @@ namespace OrdersAppBackend.Services
                     Make = item.Make,
                     Model = item.Model,
                     Year = item.Year,
-                    UnitPrice = item.UnitPrice,
-                    SubTotal = item.SubTotal
+                    Quantity = item.Quantity,
+                    UnitPrice = item.UnitPrice
                 }).ToList();
 
                 await _orderItemRepository.AddManyAsync(order.Id, orderItems);

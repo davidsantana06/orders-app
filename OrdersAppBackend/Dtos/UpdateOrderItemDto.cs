@@ -13,10 +13,10 @@ namespace OrdersAppBackend.Dtos
         [Required, Range(1900, 2100)]
         public int Year { get; set; }
 
+        [Required, Range(1, int.MaxValue)]
+        public int Quantity { get; set; }
+
         [Required, Range(0, double.MaxValue)]
         public decimal UnitPrice { get; set; }
-
-        [Range(0, double.MaxValue)]
-        public decimal? SubTotal { get; set; }
     }
 }

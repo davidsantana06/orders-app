@@ -45,11 +45,12 @@ BEGIN
         Make NVARCHAR(100) NOT NULL,
         Model NVARCHAR(100) NOT NULL,
         Year INT NOT NULL,
+        Quantity INT NOT NULL DEFAULT 1,
         UnitPrice DECIMAL(18,2) NOT NULL,
-        SubTotal DECIMAL(18,2) NULL,
         CONSTRAINT FK_OrderItems_Orders FOREIGN KEY (OrderId) 
             REFERENCES Orders(Id) ON DELETE CASCADE,
         CONSTRAINT CHK_OrderItems_Year CHECK (Year >= 1900 AND Year <= 2100),
+        CONSTRAINT CHK_OrderItems_Quantity CHECK (Quantity >= 1),
         CONSTRAINT CHK_OrderItems_UnitPrice CHECK (UnitPrice >= 0)
     );
     PRINT 'Table OrderItems created successfully.';
@@ -91,12 +92,7 @@ BEGIN
     UPDATE o
     SET 
         o.TotalValue = ISNULL((
-            SELECT SUM(
-                CASE 
-                    WHEN oi.SubTotal IS NOT NULL THEN oi.SubTotal
-                    ELSE oi.UnitPrice
-                END
-            )
+            SELECT SUM(oi.Quantity * oi.UnitPrice)
             FROM OrderItems oi
             WHERE oi.OrderId = o.Id
         ), 0),
@@ -138,8 +134,8 @@ BEGIN
             oi.Make,
             oi.Model,
             oi.Year,
-            oi.UnitPrice,
-            oi.SubTotal
+            oi.Quantity,
+            oi.UnitPrice
         FROM Orders o
         LEFT JOIN OrderItems oi ON o.Id = oi.OrderId
         ORDER BY o.Id DESC, oi.Id;
@@ -157,8 +153,8 @@ BEGIN
         oi.Make,
         oi.Model,
         oi.Year,
-        oi.UnitPrice,
-        oi.SubTotal
+        oi.Quantity,
+        oi.UnitPrice
     FROM Orders o
     INNER JOIN OrderItems oi ON o.Id = oi.OrderId
     WHERE 
@@ -181,10 +177,10 @@ BEGIN
     
     DECLARE @Order1Id INT = SCOPE_IDENTITY();
     
-    INSERT INTO OrderItems (OrderId, Make, Model, Year, UnitPrice)
+    INSERT INTO OrderItems (OrderId, Make, Model, Year, Quantity, UnitPrice)
     VALUES 
-        (@Order1Id, 'Toyota', 'Corolla', 2023, 95000.00),
-        (@Order1Id, 'Toyota', 'Hilux', 2023, 250000.00);
+        (@Order1Id, 'Toyota', 'Corolla', 2023, 2, 95000.00),
+        (@Order1Id, 'Toyota', 'Hilux', 2023, 1, 250000.00);
     
     -- Sample Order 2
     INSERT INTO Orders (Status, CreatedAt, UpdatedAt)
@@ -192,10 +188,10 @@ BEGIN
     
     DECLARE @Order2Id INT = SCOPE_IDENTITY();
     
-    INSERT INTO OrderItems (OrderId, Make, Model, Year, UnitPrice)
+    INSERT INTO OrderItems (OrderId, Make, Model, Year, Quantity, UnitPrice)
     VALUES 
-        (@Order2Id, 'Honda', 'Civic', 2022, 120000.00),
-        (@Order2Id, 'Honda', 'HR-V', 2023, 135000.00);
+        (@Order2Id, 'Honda', 'Civic', 2022, 1, 120000.00),
+        (@Order2Id, 'Honda', 'HR-V', 2023, 3, 135000.00);
     
     -- Sample Order 3
     INSERT INTO Orders (Status, CreatedAt, UpdatedAt)
@@ -203,9 +199,9 @@ BEGIN
     
     DECLARE @Order3Id INT = SCOPE_IDENTITY();
     
-    INSERT INTO OrderItems (OrderId, Make, Model, Year, UnitPrice)
+    INSERT INTO OrderItems (OrderId, Make, Model, Year, Quantity, UnitPrice)
     VALUES 
-        (@Order3Id, 'Ford', 'Ranger', 2023, 280000.00);
+        (@Order3Id, 'Ford', 'Ranger', 2023, 1, 280000.00);
     
     PRINT 'Sample data inserted successfully.';
 END

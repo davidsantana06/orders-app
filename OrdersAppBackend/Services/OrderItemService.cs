@@ -26,8 +26,8 @@ namespace OrdersAppBackend.Services
                 Make = dto.Make,
                 Model = dto.Model,
                 Year = dto.Year,
-                UnitPrice = dto.UnitPrice,
-                SubTotal = dto.SubTotal
+                Quantity = dto.Quantity,
+                UnitPrice = dto.UnitPrice
             };
 
             await _orderItemRepository.AddAsync(orderItem);
@@ -52,8 +52,8 @@ namespace OrdersAppBackend.Services
             orderItem.Make = dto.Make;
             orderItem.Model = dto.Model;
             orderItem.Year = dto.Year;
+            orderItem.Quantity = dto.Quantity;
             orderItem.UnitPrice = dto.UnitPrice;
-            orderItem.SubTotal = dto.SubTotal;
 
             await _orderItemRepository.UpdateAsync(orderItem);
 

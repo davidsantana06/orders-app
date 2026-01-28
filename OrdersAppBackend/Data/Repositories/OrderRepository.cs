@@ -67,10 +67,8 @@ namespace OrdersAppBackend.Data.Repositories
                         Make = reader.GetString(reader.GetOrdinal("Make")),
                         Model = reader.GetString(reader.GetOrdinal("Model")),
                         Year = reader.GetInt32(reader.GetOrdinal("Year")),
-                        UnitPrice = reader.GetDecimal(reader.GetOrdinal("UnitPrice")),
-                        SubTotal = reader.IsDBNull(reader.GetOrdinal("SubTotal"))
-                            ? null
-                            : reader.GetDecimal(reader.GetOrdinal("SubTotal"))
+                        Quantity = reader.GetInt32(reader.GetOrdinal("Quantity")),
+                        UnitPrice = reader.GetDecimal(reader.GetOrdinal("UnitPrice"))
                     };
                     orders[orderId].Items.Add(item);
                 }
