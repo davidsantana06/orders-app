@@ -79,12 +79,12 @@ export class OrderFormDialogComponent implements OnInit {
 
   removeItem(index: number): void {
     if (this.items.length === 1) {
-      this.snackBar.open('A ordem deve ter pelo menos um item!', 'Fechar', {
+      this.snackBar.open('O pedido deve ter pelo menos um item!', 'Fechar', {
         duration: 3000,
       });
       return;
     }
-    
+
     this.items.removeAt(index);
     this.orderForm.updateValueAndValidity();
   }
@@ -116,13 +116,13 @@ export class OrderFormDialogComponent implements OnInit {
 
     this.orderService.create(createOrderDto).subscribe({
       next: (order) => {
-        this.snackBar.open('Ordem criada com sucesso!', 'Fechar', {
+        this.snackBar.open('Pedido criado com sucesso!', 'Fechar', {
           duration: 3000,
         });
         this.dialogRef.close(order);
       },
       error: (error) =>
-        this.snackBar.open(`Erro ao criar ordem: ${error.message}`, 'Fechar', {
+        this.snackBar.open(`Erro ao criar pedido: ${error.message}`, 'Fechar', {
           duration: 5000,
         }),
     });

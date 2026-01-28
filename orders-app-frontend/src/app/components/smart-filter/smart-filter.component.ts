@@ -11,7 +11,14 @@ import { OrderFilter } from '../../models';
 
 @Component({
   selector: 'app-smart-filter',
-  imports: [MatCardModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatIconModule, FormsModule],
+  imports: [
+    MatCardModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatIconModule,
+    FormsModule,
+  ],
   templateUrl: './smart-filter.component.html',
   styles: `
     .filter-header {
@@ -124,10 +131,10 @@ export class SmartFilterComponent implements OnInit {
     this.selectedMake = undefined;
     this.selectedModel = undefined;
     this.selectedYear = undefined;
-    
+
     this.modelOptions = [];
     this.yearOptions = [];
-    
+
     this.filterCleared.emit();
   }
 

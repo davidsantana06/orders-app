@@ -1,7 +1,7 @@
 <div class="actions-container">
   <button mat-raised-button color="primary" (click)="openCreateDialog()">
     <mat-icon>add</mat-icon>
-    Nova Ordem
+    Novo Pedido
   </button>
 
   <div class="export-buttons">
@@ -18,9 +18,11 @@
 
 @if (orders.length === 0) {
   <div class="empty-state">
-    <mat-icon style="font-size: 48px; width: 48px; height: 48px; color: rgba(0, 0, 0, 0.26)">inbox</mat-icon>
-    <p style="margin-top: 16px; font-size: 1.1rem;">Nenhum pedido encontrado</p>
-    <p style="color: rgba(0, 0, 0, 0.6);">Crie um novo pedido ou ajuste os filtros de busca</p>
+    <mat-icon style="font-size: 48px; width: 48px; height: 48px; color: rgba(0, 0, 0, 0.26)"
+      >inbox</mat-icon
+    >
+    <p style="margin-top: 16px; font-size: 1.1rem">Nenhum pedido encontrado</p>
+    <p style="color: rgba(0, 0, 0, 0.6)">Crie um novo pedido ou ajuste os filtros de busca</p>
   </div>
 } @else {
   <mat-accordion>
@@ -56,10 +58,8 @@
           </div>
         </mat-expansion-panel-header>
 
-        <div style="padding: 16px;">
-          <h3 style="margin: 0 0 16px 0; color: rgba(0, 0, 0, 0.87);">
-            Itens do Pedido
-          </h3>
+        <div style="padding: 16px">
+          <h3 style="margin: 0 0 16px 0; color: rgba(0, 0, 0, 0.87)">Itens do Pedido</h3>
 
           @if (order.orderItems && order.orderItems.length > 0) {
             <div class="items-table-wrapper">
@@ -69,9 +69,9 @@
                     <th>Marca</th>
                     <th>Modelo</th>
                     <th>Ano</th>
-                    <th style="text-align: right;">Quantidade</th>
-                    <th style="text-align: right;">Preço Unit.</th>
-                    <th style="text-align: right;">Subtotal</th>
+                    <th style="text-align: right">Quantidade</th>
+                    <th style="text-align: right">Preço Unit.</th>
+                    <th style="text-align: right">Subtotal</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -80,9 +80,9 @@
                       <td>{{ item.make }}</td>
                       <td>{{ item.model }}</td>
                       <td>{{ item.year }}</td>
-                      <td style="text-align: right;">{{ item.quantity }}</td>
-                      <td style="text-align: right;">{{ item.unitPrice | currency: 'BRL' }}</td>
-                      <td style="text-align: right; font-weight: 600;">
+                      <td style="text-align: right">{{ item.quantity }}</td>
+                      <td style="text-align: right">{{ item.unitPrice | currency: 'BRL' }}</td>
+                      <td style="text-align: right; font-weight: 600">
                         {{ getItemSubtotal(item) | currency: 'BRL' }}
                       </td>
                     </tr>
@@ -91,20 +91,14 @@
               </table>
             </div>
           } @else {
-            <p style="color: rgba(0, 0, 0, 0.6); font-style: italic;">
-              Nenhum item neste pedido
-            </p>
+            <p style="color: rgba(0, 0, 0, 0.6); font-style: italic">Nenhum item neste pedido</p>
           }
         </div>
 
         <mat-divider></mat-divider>
 
         <div class="panel-actions">
-          <button 
-            mat-raised-button 
-            color="warn" 
-            (click)="deleteOrder(order.id)"
-          >
+          <button mat-raised-button color="warn" (click)="deleteOrder(order.id)">
             <mat-icon>delete</mat-icon>
             Excluir Pedido
           </button>
