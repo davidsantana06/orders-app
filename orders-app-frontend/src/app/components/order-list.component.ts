@@ -30,9 +30,21 @@ import { ConfirmationDialogComponent, ConfirmationDialogData } from './confirmat
   styles: `
     .actions-container {
       display: flex;
-      gap: 8px;
+      flex-wrap: wrap;
+      gap: 12px;
       padding: 16px;
-      justify-content: flex-end;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .export-buttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .actions-container button {
+      white-space: nowrap;
     }
 
     .order-header {
@@ -73,6 +85,11 @@ import { ConfirmationDialogComponent, ConfirmationDialogData } from './confirmat
       margin: 16px 0;
     }
 
+    .items-table-wrapper {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
     .items-table th {
       text-align: left;
       padding: 12px;
@@ -81,12 +98,14 @@ import { ConfirmationDialogComponent, ConfirmationDialogData } from './confirmat
       font-size: 0.875rem;
       color: rgba(0, 0, 0, 0.87);
       border-bottom: 2px solid #e0e0e0;
+      white-space: nowrap;
     }
 
     .items-table td {
       padding: 12px;
       border-bottom: 1px solid #e0e0e0;
       font-size: 0.875rem;
+      white-space: nowrap;
     }
 
     .items-table tr:hover {
@@ -119,6 +138,42 @@ import { ConfirmationDialogComponent, ConfirmationDialogData } from './confirmat
 
     mat-expansion-panel-header.mat-expanded {
       min-height: 80px !important;
+    }
+
+    @media (max-width: 600px) {
+      .actions-container {
+        justify-content: center;
+      }
+
+      .order-info {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+      }
+
+      .info-item {
+        width: 100%;
+      }
+
+      mat-expansion-panel-header {
+        height: auto !important;
+        min-height: auto !important;
+        padding: 12px 16px !important;
+      }
+
+      .items-table th,
+      .items-table td {
+        padding: 8px;
+        font-size: 0.8rem;
+      }
+
+      .panel-actions {
+        padding: 12px;
+      }
+
+      .empty-state {
+        padding: 24px;
+      }
     }
   `,
 })
@@ -211,19 +266,5 @@ export class OrderListComponent implements OnInit {
         this.loadOrders(this.currentFilter);
       }
     });
-  }
-
-  exportPdf(): void {
-    this.snackBar.open('Exportando PDF...', undefined, { duration: 2000 });
-    setTimeout(() => {
-      this.snackBar.open('PDF exportado com sucesso!', 'Fechar', { duration: 3000 });
-    }, 2000);
-  }
-
-  exportExcel(): void {
-    this.snackBar.open('Exportando Excel...', undefined, { duration: 2000 });
-    setTimeout(() => {
-      this.snackBar.open('Excel exportado com sucesso!', 'Fechar', { duration: 3000 });
-    }, 2000);
   }
 }
