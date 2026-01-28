@@ -78,11 +78,15 @@ export class OrderFormDialogComponent implements OnInit {
   }
 
   removeItem(index: number): void {
-    if (!this.items.length)
+    if (this.items.length === 1) {
       this.snackBar.open('A ordem deve ter pelo menos um item!', 'Fechar', {
         duration: 3000,
       });
+      return;
+    }
+    
     this.items.removeAt(index);
+    this.orderForm.updateValueAndValidity();
   }
 
   cancel(): void {
