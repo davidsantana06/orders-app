@@ -1,6 +1,10 @@
-# 📦 **OrdersApp**
+<img
+  src="./assets/usage.gif"
+  alt="OrdersApp — Uso"
+  style="width: 100%"
+/>
 
-Aplicação fullstack para gestão de pedidos. O projeto adota uma arquitetura limpa, orquestrando um backend .NET escalável com um frontend Angular focado em experiência do usuário.
+📦 **OrdersApp** é uma aplicação fullstack para gestão de pedidos. O projeto adota uma arquitetura limpa, orquestrando um backend .NET escalável com um frontend Angular focado em experiência do usuário.
 
 ### 📌 Acesso Rápido
 
