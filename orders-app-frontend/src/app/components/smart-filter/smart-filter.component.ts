@@ -13,7 +13,41 @@ import { OrderFilter } from '../../models';
   selector: 'app-smart-filter',
   imports: [MatCardModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatIconModule, FormsModule],
   templateUrl: './smart-filter.component.html',
-  styles: ``,
+  styles: `
+    .filter-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: rgba(0, 0, 0, 0.87);
+    }
+
+    .header-icon {
+      font-size: 28px;
+      width: 28px;
+      height: 28px;
+      color: #1976d2;
+    }
+
+    .filter-content {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      padding-top: 24px !important;
+      padding-bottom: 8px !important;
+    }
+
+    mat-form-field {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .filter-button {
+      height: 56px;
+      min-width: 120px;
+      font-weight: 500;
+    }
+  `,
 })
 export class SmartFilterComponent implements OnInit {
   private readonly itemService = inject(OrderItemService);

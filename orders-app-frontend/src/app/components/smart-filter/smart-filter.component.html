@@ -1,12 +1,13 @@
-<mat-card>
+<mat-card class="mat-elevation-z2">
   <mat-card-header>
-    <mat-card-title>Filtros de Busca</mat-card-title>
+    <div class="filter-header">
+      <mat-icon class="header-icon">filter_alt</mat-icon>
+      <mat-card-title>Filtrar Resultados</mat-card-title>
+    </div>
   </mat-card-header>
 
-  <mat-card-content
-    style="display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; margin-top: 16px"
-  >
-    <mat-form-field appearance="outline" style="flex: 1; min-width: 200px">
+  <mat-card-content class="filter-content">
+    <mat-form-field appearance="outline">
       <mat-label>Marca</mat-label>
       <mat-select [(ngModel)]="selectedMake" (selectionChange)="onMakeChange()">
         @for (make of makeOptions; track make) {
@@ -15,7 +16,7 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" style="flex: 1; min-width: 200px">
+    <mat-form-field appearance="outline">
       <mat-label>Modelo</mat-label>
       <mat-select
         [(ngModel)]="selectedModel"
@@ -28,7 +29,7 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" style="flex: 1; min-width: 200px">
+    <mat-form-field appearance="outline">
       <mat-label>Ano</mat-label>
       <mat-select [(ngModel)]="selectedYear" [disabled]="isYearDisabled">
         @for (year of yearOptions; track year) {
@@ -43,22 +44,21 @@
       type="button"
       (click)="onFilter()"
       [disabled]="!isFilterValid"
-      style="height: 56px"
+      class="filter-button"
     >
-      <mat-icon>filter_alt</mat-icon>
+      <mat-icon>search</mat-icon>
       Filtrar
     </button>
 
     <button
-      mat-raised-button
-      color="accent"
+      mat-stroked-button
       type="button"
       (click)="clearFilters()"
       [disabled]="!selectedMake && !selectedModel && !selectedYear"
-      style="height: 56px"
+      class="filter-button"
     >
       <mat-icon>refresh</mat-icon>
-      Limpar Filtros
+      Limpar
     </button>
   </mat-card-content>
 </mat-card>
