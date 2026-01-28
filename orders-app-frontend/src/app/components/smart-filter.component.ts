@@ -38,7 +38,7 @@ export class SmartFilterComponent implements OnInit {
       next: (makes) => {
         this.makeOptions = makes;
       },
-      error: (error) => console.error('Error while loading makes:', error.message),
+      error: (error) => console.error('Error while loading makes:', error),
     });
   }
 
@@ -54,7 +54,7 @@ export class SmartFilterComponent implements OnInit {
       next: (models) => {
         this.modelOptions = models;
       },
-      error: (error) => console.error('Error while loading models:', error.message),
+      error: (error) => console.error('Error while loading models:', error),
     });
   }
 
@@ -68,21 +68,12 @@ export class SmartFilterComponent implements OnInit {
       next: (years) => {
         this.yearOptions = years;
       },
-      error: (error) => console.error('Error while loading years:', error.message),
+      error: (error) => console.error('Error while loading years:', error),
     });
   }
 
   onFilter(): void {
-    console.log('SmartFilterComponent: onFilter() chamado');
-    console.log('SmartFilterComponent: isFilterValid =', this.isFilterValid);
-    console.log('SmartFilterComponent: Valores selecionados:', {
-      make: this.selectedMake,
-      model: this.selectedModel,
-      year: this.selectedYear,
-    });
-
     if (!this.isFilterValid) {
-      console.warn('SmartFilterComponent: Filtro inválido, emissão cancelada');
       return;
     }
 
@@ -92,24 +83,17 @@ export class SmartFilterComponent implements OnInit {
       year: this.selectedYear,
     };
 
-    console.log('SmartFilterComponent: Emitindo filterChanged com:', filter);
     this.filterChanged.emit(filter);
   }
 
   clearFilters(): void {
-    console.log('SmartFilterComponent: clearFilters() chamado');
-    
-    // Limpa todos os valores selecionados
     this.selectedMake = undefined;
     this.selectedModel = undefined;
     this.selectedYear = undefined;
     
-    // Limpa as opções dependentes
     this.modelOptions = [];
     this.yearOptions = [];
     
-    console.log('SmartFilterComponent: Filtros limpos, emitindo filterCleared');
-    // Emite evento para o componente pai carregar todos os dados
     this.filterCleared.emit();
   }
 

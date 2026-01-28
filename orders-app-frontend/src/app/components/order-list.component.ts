@@ -132,22 +132,18 @@ export class OrderListComponent implements OnInit {
   currentFilter?: OrderFilter;
 
   ngOnInit(): void {
-    console.log('OrderListComponent: ngOnInit chamado');
     this.loadOrders();
   }
 
   loadOrders(filter?: OrderFilter): void {
-    console.log('OrderListComponent: loadOrders chamado com filtro:', filter);
     this.currentFilter = filter;
     this.orderService.getMany(filter).subscribe({
       next: (orders) => {
-        console.log('OrderListComponent: Pedidos recebidos:', orders.length);
         this.orders = orders;
-        // CRÍTICO: Com OnPush, precisamos marcar para verificação manual
         this.cdr.markForCheck();
       },
       error: (error) => {
-        console.error('OrderListComponent: Erro ao carregar pedidos:', error);
+        console.error('Error loading orders:', error);
         this.snackBar.open(`Erro ao carregar pedidos: ${error.message}`, 'Fechar', {
           duration: 5000,
         });
@@ -169,8 +165,6 @@ export class OrderListComponent implements OnInit {
   }
 
   deleteOrder(id: number): void {
-    console.log('OrderListComponent: Solicitando confirmação para excluir pedido ID:', id);
-    
     const dialogData: ConfirmationDialogData = {
       title: 'Confirmar Exclusão',
       message: 'Tem certeza que deseja excluir este pedido? Esta ação não pode ser desfeita.',
@@ -186,21 +180,18 @@ export class OrderListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((confirmed) => {
       if (!confirmed) {
-        console.log('OrderListComponent: Exclusão cancelada pelo usuário');
         return;
       }
 
-      console.log('OrderListComponent: Excluindo pedido ID:', id);
       this.orderService.delete(id).subscribe({
         next: () => {
-          console.log('OrderListComponent: Pedido excluído, atualizando lista');
           this.snackBar.open('Pedido excluído com sucesso!', 'Fechar', {
             duration: 3000,
           });
           this.loadOrders(this.currentFilter);
         },
         error: (error) => {
-          console.error('OrderListComponent: Erro ao excluir pedido:', error);
+          console.error('Error deleting order:', error);
           this.snackBar.open(`Erro ao excluir pedido: ${error.message}`, 'Fechar', {
             duration: 5000,
           });
@@ -210,16 +201,13 @@ export class OrderListComponent implements OnInit {
   }
 
   openCreateDialog(): void {
-    console.log('OrderListComponent: Abrindo dialog de criação');
     const dialogRef = this.dialog.open(OrderFormDialogComponent, {
       width: '800px',
       disableClose: true,
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('OrderListComponent: Dialog fechado com resultado:', result);
       if (result) {
-        console.log('OrderListComponent: Pedido criado, atualizando lista');
         this.loadOrders(this.currentFilter);
       }
     });
