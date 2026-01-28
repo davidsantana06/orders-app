@@ -4,16 +4,16 @@
     Nova Ordem
   </button>
 
-  <div style="flex: 1;"></div>
-
-  <button mat-stroked-button (click)="exportPdf()">
-    <mat-icon>picture_as_pdf</mat-icon>
-    Exportar PDF
-  </button>
-  <button mat-stroked-button (click)="exportExcel()">
-    <mat-icon>table_chart</mat-icon>
-    Exportar Excel
-  </button>
+  <div class="export-buttons">
+    <button mat-stroked-button [disabled]="true">
+      <mat-icon>picture_as_pdf</mat-icon>
+      Exportar PDF
+    </button>
+    <button mat-stroked-button [disabled]="true">
+      <mat-icon>table_chart</mat-icon>
+      Exportar Excel
+    </button>
+  </div>
 </div>
 
 @if (orders.length === 0) {
@@ -62,32 +62,34 @@
           </h3>
 
           @if (order.orderItems && order.orderItems.length > 0) {
-            <table class="items-table">
-              <thead>
-                <tr>
-                  <th>Marca</th>
-                  <th>Modelo</th>
-                  <th>Ano</th>
-                  <th style="text-align: right;">Quantidade</th>
-                  <th style="text-align: right;">Preço Unit.</th>
-                  <th style="text-align: right;">Subtotal</th>
-                </tr>
-              </thead>
-              <tbody>
-                @for (item of order.orderItems; track item.id) {
+            <div class="items-table-wrapper">
+              <table class="items-table">
+                <thead>
                   <tr>
-                    <td>{{ item.make }}</td>
-                    <td>{{ item.model }}</td>
-                    <td>{{ item.year }}</td>
-                    <td style="text-align: right;">{{ item.quantity }}</td>
-                    <td style="text-align: right;">{{ item.unitPrice | currency: 'BRL' }}</td>
-                    <td style="text-align: right; font-weight: 600;">
-                      {{ getItemSubtotal(item) | currency: 'BRL' }}
-                    </td>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Ano</th>
+                    <th style="text-align: right;">Quantidade</th>
+                    <th style="text-align: right;">Preço Unit.</th>
+                    <th style="text-align: right;">Subtotal</th>
                   </tr>
-                }
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  @for (item of order.orderItems; track item.id) {
+                    <tr>
+                      <td>{{ item.make }}</td>
+                      <td>{{ item.model }}</td>
+                      <td>{{ item.year }}</td>
+                      <td style="text-align: right;">{{ item.quantity }}</td>
+                      <td style="text-align: right;">{{ item.unitPrice | currency: 'BRL' }}</td>
+                      <td style="text-align: right; font-weight: 600;">
+                        {{ getItemSubtotal(item) | currency: 'BRL' }}
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
           } @else {
             <p style="color: rgba(0, 0, 0, 0.6); font-style: italic;">
               Nenhum item neste pedido
