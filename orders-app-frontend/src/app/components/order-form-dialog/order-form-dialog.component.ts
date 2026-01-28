@@ -8,8 +8,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { OrderService } from '../services';
-import { CreateOrderDto, CreateOrderItemDto } from '../models';
+import { OrderService } from '../../services';
+import { CreateOrderDto, CreateOrderItemDto } from '../../models';
 
 @Component({
   selector: 'app-order-form-dialog',

@@ -8,10 +8,10 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { DatePipe, CurrencyPipe } from '@angular/common';
 
-import { OrderService } from '../services';
-import { Order, OrderStatus, OrderFilter, OrderItem } from '../models';
-import { OrderFormDialogComponent } from './order-form-dialog.component';
-import { ConfirmationDialogComponent, ConfirmationDialogData } from './confirmation-dialog.component';
+import { OrderService } from '../../services';
+import { Order, OrderStatus, OrderFilter, OrderItem } from '../../models';
+import { OrderFormDialogComponent } from '../order-form-dialog/order-form-dialog.component';
+import { ConfirmationDialogComponent, ConfirmationDialogData } from '../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-order-list',

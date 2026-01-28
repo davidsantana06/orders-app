@@ -6,8 +6,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 
-import { OrderItemService } from '../services';
-import { OrderFilter } from '../models';
+import { OrderItemService } from '../../services';
+import { OrderFilter } from '../../models';
 
 @Component({
   selector: 'app-smart-filter',
