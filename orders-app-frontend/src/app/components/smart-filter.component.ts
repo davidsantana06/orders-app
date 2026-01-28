@@ -33,7 +33,9 @@ export class SmartFilterComponent implements OnInit {
 
   private loadMakes(): void {
     this.itemService.getMakes().subscribe({
-      next: (makes) => (this.makeOptions = makes),
+      next: (makes) => {
+        this.makeOptions = makes;
+      },
       error: (error) => console.error('Error while loading makes:', error.message),
     });
   }
@@ -47,7 +49,9 @@ export class SmartFilterComponent implements OnInit {
     if (!this.selectedMake) return;
 
     this.itemService.getModels(this.selectedMake).subscribe({
-      next: (models) => (this.modelOptions = models),
+      next: (models) => {
+        this.modelOptions = models;
+      },
       error: (error) => console.error('Error while loading models:', error.message),
     });
   }
@@ -59,19 +63,35 @@ export class SmartFilterComponent implements OnInit {
     if (!this.selectedMake || !this.selectedModel) return;
 
     this.itemService.getYears(this.selectedMake, this.selectedModel).subscribe({
-      next: (years) => (this.yearOptions = years),
+      next: (years) => {
+        this.yearOptions = years;
+      },
       error: (error) => console.error('Error while loading years:', error.message),
     });
   }
 
   onFilter(): void {
-    if (!this.isFilterValid) return;
-
-    this.filterChanged.emit({
+    console.log('SmartFilterComponent: onFilter() chamado');
+    console.log('SmartFilterComponent: isFilterValid =', this.isFilterValid);
+    console.log('SmartFilterComponent: Valores selecionados:', {
       make: this.selectedMake,
       model: this.selectedModel,
       year: this.selectedYear,
     });
+
+    if (!this.isFilterValid) {
+      console.warn('SmartFilterComponent: Filtro inválido, emissão cancelada');
+      return;
+    }
+
+    const filter: OrderFilter = {
+      make: this.selectedMake,
+      model: this.selectedModel,
+      year: this.selectedYear,
+    };
+
+    console.log('SmartFilterComponent: Emitindo filterChanged com:', filter);
+    this.filterChanged.emit(filter);
   }
 
   get isFilterValid(): boolean {

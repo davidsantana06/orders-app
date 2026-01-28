@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -23,6 +23,7 @@ import { OrderFormDialogComponent } from './order-form-dialog.component';
     CurrencyPipe,
   ],
   templateUrl: './order-list.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: `
     .actions-container {
       display: flex;
@@ -40,23 +41,33 @@ export class OrderListComponent implements OnInit {
   private readonly orderService = inject(OrderService);
   private readonly snackBar = inject(MatSnackBar);
   private readonly dialog = inject(MatDialog);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   orders: Order[] = [];
   displayedColumns: string[] = ['id', 'orderDate', 'totalValue', 'status', 'actions'];
   currentFilter?: OrderFilter;
 
   ngOnInit(): void {
+    console.log('OrderListComponent: ngOnInit chamado');
     this.loadOrders();
   }
 
   loadOrders(filter?: OrderFilter): void {
+    console.log('OrderListComponent: loadOrders chamado com filtro:', filter);
     this.currentFilter = filter;
     this.orderService.getMany(filter).subscribe({
-      next: (orders) => (this.orders = orders),
-      error: (error) =>
+      next: (orders) => {
+        console.log('OrderListComponent: Pedidos recebidos:', orders.length);
+        this.orders = orders;
+        // CRÍTICO: Com OnPush, precisamos marcar para verificação manual
+        this.cdr.markForCheck();
+      },
+      error: (error) => {
+        console.error('OrderListComponent: Erro ao carregar pedidos:', error);
         this.snackBar.open(`Erro ao carregar pedidos: ${error.message}`, 'Fechar', {
           duration: 5000,
-        }),
+        });
+      },
     });
   }
 

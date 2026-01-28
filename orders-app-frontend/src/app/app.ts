@@ -1,4 +1,4 @@
-import { Component, signal, viewChild } from '@angular/core';
+import { Component, signal, viewChild, OnInit, afterNextRender } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 import { TopBarComponent, SmartFilterComponent, OrderListComponent } from './components';
@@ -10,11 +10,36 @@ import { OrderFilter } from './models';
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
-export class App {
+export class App implements OnInit {
   protected readonly title = signal('orders-app-frontend');
   private readonly orderList = viewChild(OrderListComponent);
 
+  constructor() {
+    console.log('App: Constructor chamado');
+    // Carregamento inicial após a renderização
+    afterNextRender(() => {
+      console.log('App: afterNextRender - viewChild disponível?', !!this.orderList());
+      const listComponent = this.orderList();
+      if (listComponent) {
+        console.log('App: Chamando loadOrders() inicial');
+        listComponent.loadOrders();
+      } else {
+        console.error('App: OrderListComponent não encontrado no viewChild!');
+      }
+    });
+  }
+
+  ngOnInit(): void {
+    console.log('App: ngOnInit chamado');
+  }
+
   onFilterChanged(filter: OrderFilter): void {
-    this.orderList()?.loadOrders(filter);
+    console.log('App: onFilterChanged chamado com filtro:', filter);
+    const listComponent = this.orderList();
+    if (listComponent) {
+      listComponent.loadOrders(filter);
+    } else {
+      console.error('App: OrderListComponent não disponível para aplicar filtro!');
+    }
   }
 }
