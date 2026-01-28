@@ -13,12 +13,12 @@ COPY OrdersAppBackend.Tests/ ./OrdersAppBackend.Tests/
 # Test stage - executes tests and fails the build if tests fail
 FROM build AS test
 WORKDIR /src
-RUN dotnet test OrdersAppBackend.Tests/OrdersAppBackend.Tests.csproj --configuration Release --logger "console;verbosity=detailed" --no-restore
+RUN dotnet test OrdersAppBackend.Tests/OrdersAppBackend.Tests.csproj --configuration Release --logger "console;verbosity=detailed"
 
 # Publish stage - only runs if tests pass
 FROM build AS publish
 WORKDIR /src/OrdersAppBackend
-RUN dotnet publish -c Release -o /app/publish --no-restore
+RUN dotnet publish -c Release -o /app/publish
 
 # Runtime stage
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
