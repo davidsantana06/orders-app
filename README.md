@@ -1,40 +1,41 @@
 <img
-  src="./assets/usage.gif"
-  alt="OrdersApp — Uso"
-  style="width: 100%"
+    src="./_assets/usage.gif"
+    alt="OrdersApp — Uso"
+    style="width: 100%"
 />
 
-📦 **OrdersApp** é uma aplicação fullstack para gestão de pedidos. O projeto adota uma arquitetura limpa, orquestrando um backend .NET escalável com um frontend Angular focado em experiência do usuário.
+📦 **OrdersApp** é uma aplicação fullstack para gestão de pedidos. O projeto adota uma arquitetura limpa, integrando um backend .NET escalável a um frontend Angular com foco em experiência do usuário.
 
 ### 📌 Acesso Rápido
 
-| Serviço            | URL                           |
-| ------------------ | ----------------------------- |
-| **Backend API**    | http://localhost:8080         |
-| **Swagger (Docs)** | http://localhost:8080/swagger |
-| **Frontend**       | http://localhost:4200         |
+| Serviço                  | URL                                                            |
+| ------------------------ | -------------------------------------------------------------- |
+| **Swagger (backend)**    | [http://localhost:8080/swagger](http://localhost:8080/swagger) |
+| **Interface (frontend)** | [http://localhost:4200](http://localhost:4200)                 |
 
-## Backend (.NET 10)
+## 🗄️ Backend
 
-O núcleo da aplicação é uma API REST em .NET (C#) que prioriza a separação de responsabilidades. A estrutura divide claramente Controllers (pontos de entrada), Services (regras de negócio) e Repositories (acesso a dados).
+O núcleo da aplicação é uma API REST desenvolvida em C# com .NET 10. A estrutura segue a separação clara de responsabilidades entre Controllers (entrada), Services (regras de negócio) e Repositories (acesso a dados).
 
-A persistência de dados é gerenciada pelo SQL Server. Para otimizar a performance, operações pesadas como filtros complexos e cálculos de totalização foram delegadas diretamente ao banco via Stored Procedures e Triggers. Todo o ciclo é validado por testes unitários integrados ao build.
+A persistência é feita em SQL Server. Para melhor desempenho, operações mais custosas são executadas diretamente no banco por meio de um trigger e uma stored procedure, declarados respectivamente em `003_create_automatic_totalization_trigger.sql` e `004_create_filtered_search_stored_procedure.sql`. Todo o fluxo é validado por testes unitários integrados ao processo de build.
 
 A execução do backend e do banco de dados requer **Docker (v27+)**.
 
-## Frontend (Angular 18)
+## 🖥️ Frontend
 
-A interface utiliza Angular 18 e Material Design. Um dos destaques da implementação é a usabilidade nos filtros de pedidos: a seleção em cascata (Marca → Modelo → Ano) carrega as opções dinamicamente conforme a escolha anterior, tudo construído sobre uma arquitetura de componentes modulares.
+A interface foi desenvolvida com Angular 18 e Angular Material. Um dos principais destaques é o sistema de filtros de pedidos com seleção em cascata (Marca → Modelo → Ano), com carregamento dinâmico conforme a seleção anterior.
 
-A execução do frontend requer o ambiente local configurado com **Node.js (v20+)** e **Angular CLI (v18+)**.
+O código segue uma arquitetura baseada em componentes modulares.
+
+A execução do frontend requer **Node.js (v20+)** e **Angular CLI (v18+)**.
 
 ## 🛠️ Instalação e Execução
 
-Para iniciar, abra seu terminal na raiz do projeto.
+Abra um terminal na raiz do projeto.
 
 ### 1️⃣ Infraestrutura (Backend e Banco)
 
-1. Acesse o diretório do servidor:
+1. Acesse o diretório do backend:
 
 ```bash
 cd OrdersAppBackend
@@ -46,18 +47,23 @@ cd OrdersAppBackend
 cp .env.example .env
 ```
 
-3. Suba os containers. Ao finalizar (ou em outra aba), retorne ao diretório raiz:
+3. Suba os containers:
 
 ```bash
-docker-compose up --build
+docker compose up -d
+```
+
+4. Retorne ao diretório raiz:
+
+```bash
 cd ..
 ```
 
-O script `database/init.sql` rodará automaticamente para preparar o banco.
+Os scripts em `_database/scripts/` são executados automaticamente, criando o banco de dados, tabelas, trigger, stored procedure e populando o ambiente com dados fictícios.
 
 ### 2️⃣ Interface (Frontend)
 
-1. Acesse o diretório da aplicação web:
+1. Acesse o diretório do frontend:
 
 ```bash
 cd orders-app-frontend
@@ -69,7 +75,7 @@ cd orders-app-frontend
 cp .env.example .env
 ```
 
-3. Instale as dependências e inicie o servidor:
+3. Instale as dependências e inicie a aplicação:
 
 ```bash
 npm install
@@ -78,4 +84,4 @@ ng serve
 
 ## ⚖️ Licença
 
-Este projeto é distribuído sob a **Licença MIT**. Você é livre para utilizar e modificar o código. O único requisito é dar o devido crédito.
+Este projeto é distribuído sob a **Licença MIT**. O uso, modificação e redistribuição são permitidos, desde que os devidos créditos sejam mantidos.
