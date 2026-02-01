@@ -1,4 +1,4 @@
-# Build stage
+# BUIDL STAGE
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
@@ -9,18 +9,21 @@ RUN dotnet restore OrdersAppBackend.Tests/OrdersAppBackend.Tests.csproj
 
 COPY OrdersAppBackend/ ./OrdersAppBackend/
 COPY OrdersAppBackend.Tests/ ./OrdersAppBackend.Tests/
+# - - -
 
-# Test stage - executes tests and fails the build if tests fail
+# TEST STAGE — Executes tests and fails the build if tests fail
 FROM build AS test
 WORKDIR /src
 RUN dotnet test OrdersAppBackend.Tests/OrdersAppBackend.Tests.csproj --configuration Release --logger "console;verbosity=detailed"
+# - - -
 
-# Publish stage - only runs if tests pass
+# PUBLISH STAGE — Only runs if tests pass
 FROM build AS publish
 WORKDIR /src/OrdersAppBackend
 RUN dotnet publish -c Release -o /app/publish
+# - - -
 
-# Runtime stage
+# RUNTIME STAGE
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 WORKDIR /app
 
@@ -29,3 +32,4 @@ COPY --from=publish /app/publish .
 EXPOSE 8080
 
 ENTRYPOINT ["dotnet", "OrdersAppBackend.dll"]
+# - - -

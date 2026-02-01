@@ -21,14 +21,12 @@ namespace OrdersAppBackend.Data.Repositories
 
         public async Task<List<Order>> FindManyAsync(string? make = null, string? model = null, int? year = null)
         {
-            // Use Stored Procedure sp_GetOrdersWithFilters
             var makeParam = new SqlParameter("@Make", (object?)make ?? DBNull.Value);
             var modelParam = new SqlParameter("@Model", (object?)model ?? DBNull.Value);
             var yearParam = new SqlParameter("@Year", (object?)year ?? DBNull.Value);
 
             var sql = "EXEC sp_GetOrdersWithFilters @Make, @Model, @Year";
 
-            // Execute stored procedure and map to Order
             var orders = new Dictionary<int, Order>();
 
             await using var command = _dbContext.Database.GetDbConnection().CreateCommand();

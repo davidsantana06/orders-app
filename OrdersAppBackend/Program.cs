@@ -5,12 +5,10 @@ using OrdersAppBackend.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Get connection string from environment variable or appsettings.json
-var connectionString = builder.Configuration["CONNECTION_STRING"]
-    ?? builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = builder.Configuration["CONNECTION_STRING"]      // From env (.env or launchSettings.json)
+    ?? builder.Configuration.GetConnectionString("DefaultConnection"); // ...or appsettings.json
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
@@ -21,14 +19,17 @@ builder.Services.AddScoped<IOrderItemService, OrderItemService>();
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
-        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+        options.JsonSerializerOptions.ReferenceHandler =
+            System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
     });
+
+var corsOrigins = builder.Configuration["CORS_ALLOWED_ORIGINS"]?.Split(',') ?? [];
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
+    options.AddPolicy("AllowSpecificOrigins", policy =>
     {
-        policy.AllowAnyOrigin()
+        policy.WithOrigins(corsOrigins)
             .AllowAnyMethod()
             .AllowAnyHeader();
     });
@@ -41,7 +42,7 @@ var app = builder.Build();
 
 app.MapControllers();
 
-app.UseCors("AllowAll");
+app.UseCors("AllowSpecificOrigins");
 
 if (app.Environment.IsDevelopment())
 {

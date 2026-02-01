@@ -69,7 +69,6 @@ namespace OrdersAppBackend.Services
             return true;
         }
 
-        // Filter helpers
         public async Task<List<string>> GetMakesAsync()
         {
             return await _orderItemRepository.GetDistinctMakesAsync();

@@ -12,7 +12,6 @@ namespace OrdersAppBackend.Models
 
         public DateTime UpdatedAt { get; set; }
 
-        // Navigation property
         public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
     }
 }

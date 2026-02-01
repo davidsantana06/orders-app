@@ -10,8 +10,6 @@ namespace OrdersAppBackend.Services
         Task<OrderItem?> GetByIdAsync(int id);
         Task<OrderItem?> UpdateAsync(int id, UpdateOrderItemDto dto);
         Task<bool> DeleteAsync(int id);
-
-        // Filter helpers
         Task<List<string>> GetMakesAsync();
         Task<List<string>> GetModelsAsync(string make);
         Task<List<int>> GetYearsAsync(string make, string model);

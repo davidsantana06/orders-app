@@ -15,7 +15,6 @@ AS
 BEGIN
     SET NOCOUNT ON;
     
-    -- Declare variable to store affected OrderIds
     DECLARE @AffectedOrders TABLE (OrderId INT);
     
     -- Get OrderIds from inserted records (INSERT/UPDATE)
