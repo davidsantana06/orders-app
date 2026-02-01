@@ -12,8 +12,8 @@ services:
       - "1433:1433"
     volumes:
       - sqlserver_data:/var/opt/mssql
-      - ./database/scripts:/docker-entrypoint-initdb.d
-      - ./database/entrypoint.sh:/entrypoint.sh
+      - ./_database/scripts:/docker-entrypoint-initdb.d
+      - ./_database/entrypoint.sh:/entrypoint.sh
     entrypoint: /bin/bash /entrypoint.sh
     networks:
       - orders-app-network
