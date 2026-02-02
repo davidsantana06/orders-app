@@ -74,7 +74,7 @@ namespace OrdersAppBackend.Tests.Services
         [Fact]
         public async Task CreateAsync_ShouldReturnNull_WhenOrderNotFound()
         {
-            // Arrange
+            // A
             var orderId = 99;
             var dto = new CreateOrderItemDto
             {
@@ -89,10 +89,10 @@ namespace OrdersAppBackend.Tests.Services
                 r => r.FindFirstByIdAsync(orderId)
             ).ReturnsAsync((Order?)null);
 
-            // Act
+            // A
             var result = await _sut.CreateAsync(dto, orderId);
 
-            // Assert
+            // A
             Assert.Null(result);
             _orderRepoMock.Verify(r => r.FindFirstByIdAsync(orderId), Times.Once);
             _orderItemRepoMock.Verify(
@@ -104,7 +104,7 @@ namespace OrdersAppBackend.Tests.Services
         [Fact]
         public async Task GetManyAsync_ShouldReturnOrderItems_WhenItemsExist()
         {
-            // Arrange
+            // A
             var expectedItems = new List<OrderItem>
             {
                 new OrderItem
@@ -131,10 +131,10 @@ namespace OrdersAppBackend.Tests.Services
 
             _orderItemRepoMock.Setup(r => r.FindManyAsync()).ReturnsAsync(expectedItems);
 
-            // Act
+            // A
             var result = await _sut.GetManyAsync();
 
-            // Assert
+            // A
             Assert.Equal(2, result.Count);
             Assert.Equal("Toyota", result[0].Make);
             Assert.Equal("Honda", result[1].Make);
@@ -143,20 +143,20 @@ namespace OrdersAppBackend.Tests.Services
         [Fact]
         public async Task GetManyAsync_ShouldReturnEmpty_WhenNoItemsExist()
         {
-            // Arrange
+            // A
             _orderItemRepoMock.Setup(r => r.FindManyAsync()).ReturnsAsync(new List<OrderItem>());
 
-            // Act
+            // A
             var result = await _sut.GetManyAsync();
 
-            // Assert
+            // A
             Assert.Empty(result);
         }
 
         [Fact]
         public async Task GetByIdAsync_ShouldReturnOrderItem_WhenItemExists()
         {
-            // Arrange
+            // A
             var orderItem = new OrderItem
             {
                 Id = 1,
@@ -170,10 +170,10 @@ namespace OrdersAppBackend.Tests.Services
 
             _orderItemRepoMock.Setup(r => r.FindFirstByIdAsync(1)).ReturnsAsync(orderItem);
 
-            // Act
+            // A
             var result = await _sut.GetByIdAsync(1);
 
-            // Assert
+            // A
             Assert.NotNull(result);
             Assert.Equal(1, result.Id);
             Assert.Equal("Toyota", result.Make);
@@ -182,22 +182,22 @@ namespace OrdersAppBackend.Tests.Services
         [Fact]
         public async Task GetByIdAsync_ShouldReturnNull_WhenItemDoesNotExist()
         {
-            // Arrange
+            // A
             _orderItemRepoMock.Setup(
                 r => r.FindFirstByIdAsync(It.IsAny<int>())
             ).ReturnsAsync((OrderItem?)null);
 
-            // Act
+            // A
             var result = await _sut.GetByIdAsync(99);
 
-            // Assert
+            // A
             Assert.Null(result);
         }
 
         [Fact]
         public async Task UpdateAsync_ShouldUpdateOrderItem_WhenItemExists()
         {
-            // Arrange
+            // A
             var existingItem = new OrderItem
             {
                 Id = 1,
@@ -225,10 +225,10 @@ namespace OrdersAppBackend.Tests.Services
                 .Callback<OrderItem>(oi => updatedItem = oi)
                 .Returns(Task.CompletedTask);
 
-            // Act
+            // A
             var result = await _sut.UpdateAsync(1, dto);
 
-            // Assert
+            // A
             Assert.NotNull(result);
             Assert.Equal("Honda", result.Make);
             Assert.Equal("Civic", result.Model);
@@ -242,7 +242,7 @@ namespace OrdersAppBackend.Tests.Services
         [Fact]
         public async Task UpdateAsync_ShouldReturnNull_WhenItemDoesNotExist()
         {
-            // Arrange
+            // A
             var dto = new UpdateOrderItemDto
             {
                 Make = "Honda",
@@ -256,10 +256,10 @@ namespace OrdersAppBackend.Tests.Services
                 r => r.FindFirstByIdAsync(It.IsAny<int>())
             ).ReturnsAsync((OrderItem?)null);
 
-            // Act
+            // A
             var result = await _sut.UpdateAsync(99, dto);
 
-            // Assert
+            // A
             Assert.Null(result);
             _orderItemRepoMock.Verify(
                 r => r.UpdateAsync(It.IsAny<OrderItem>()),
@@ -270,7 +270,7 @@ namespace OrdersAppBackend.Tests.Services
         [Fact]
         public async Task DeleteAsync_ShouldReturnTrue_WhenItemExists()
         {
-            // Arrange
+            // A
             var orderItem = new OrderItem
             {
                 Id = 1,
@@ -284,10 +284,10 @@ namespace OrdersAppBackend.Tests.Services
 
             _orderItemRepoMock.Setup(r => r.FindFirstByIdAsync(1)).ReturnsAsync(orderItem);
 
-            // Act
+            // A
             var result = await _sut.DeleteAsync(1);
 
-            // Assert
+            // A
             Assert.True(result);
             _orderItemRepoMock.Verify(r => r.RemoveAsync(orderItem), Times.Once);
         }
@@ -295,15 +295,15 @@ namespace OrdersAppBackend.Tests.Services
         [Fact]
         public async Task DeleteAsync_ShouldReturnFalse_WhenItemDoesNotExist()
         {
-            // Arrange
+            // A
             _orderItemRepoMock.Setup(
                 r => r.FindFirstByIdAsync(It.IsAny<int>())
             ).ReturnsAsync((OrderItem?)null);
 
-            // Act
+            // A
             var result = await _sut.DeleteAsync(99);
 
-            // Assert
+            // A
             Assert.False(result);
             _orderItemRepoMock.Verify(
                 r => r.RemoveAsync(It.IsAny<OrderItem>()),
@@ -314,14 +314,14 @@ namespace OrdersAppBackend.Tests.Services
         [Fact]
         public async Task GetMakesAsync_ShouldReturnDistinctMakes()
         {
-            // Arrange
+            // A
             var expectedMakes = new List<string> { "Toyota", "Honda", "Ford" };
             _orderItemRepoMock.Setup(r => r.GetDistinctMakesAsync()).ReturnsAsync(expectedMakes);
 
-            // Act
+            // A
             var result = await _sut.GetMakesAsync();
 
-            // Assert
+            // A
             Assert.Equal(3, result.Count);
             Assert.Contains("Toyota", result);
             Assert.Contains("Honda", result);
@@ -331,15 +331,15 @@ namespace OrdersAppBackend.Tests.Services
         [Fact]
         public async Task GetModelsAsync_ShouldReturnDistinctModels_ForGivenMake()
         {
-            // Arrange
+            // A
             var make = "Toyota";
             var expectedModels = new List<string> { "Corolla", "Camry", "RAV4" };
             _orderItemRepoMock.Setup(r => r.GetDistinctModelsAsync(make)).ReturnsAsync(expectedModels);
 
-            // Act
+            // A
             var result = await _sut.GetModelsAsync(make);
 
-            // Assert
+            // A
             Assert.Equal(3, result.Count);
             Assert.Contains("Corolla", result);
             Assert.Contains("Camry", result);
@@ -350,7 +350,7 @@ namespace OrdersAppBackend.Tests.Services
         [Fact]
         public async Task GetYearsAsync_ShouldReturnDistinctYears_ForGivenMakeAndModel()
         {
-            // Arrange
+            // A
             var make = "Toyota";
             var model = "Corolla";
             var expectedYears = new List<int> { 2020, 2021, 2022 };
@@ -358,10 +358,10 @@ namespace OrdersAppBackend.Tests.Services
                 r => r.GetDistinctYearsAsync(make, model)
             ).ReturnsAsync(expectedYears);
 
-            // Act
+            // A
             var result = await _sut.GetYearsAsync(make, model);
 
-            // Assert
+            // A
             Assert.Equal(3, result.Count);
             Assert.Contains(2020, result);
             Assert.Contains(2021, result);

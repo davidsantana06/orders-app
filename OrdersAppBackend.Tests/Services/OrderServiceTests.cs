@@ -35,8 +35,18 @@ namespace OrdersAppBackend.Tests.Services
             var year = 2020;
             var expectedOrders = new List<Order>
             {
-                new Order { Id = 1, Status = "Solicitado", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Order { Id = 2, Status = "Aprovado", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
+                new Order {
+                    Id = 1,
+                    Status = "Solicitado",
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                },
+                new Order {
+                    Id = 2,
+                    Status = "Aprovado",
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                }
             };
 
             _orderRepoMock.Setup(
@@ -57,22 +67,37 @@ namespace OrdersAppBackend.Tests.Services
         [Fact]
         public async Task GetManyAsync_ShouldReturnOrders_WhenNoFilters()
         {
-            // Arrange
+            // A
             var expectedOrders = new List<Order>
             {
-                new Order { Id = 1, Status = "Solicitado", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Order { Id = 2, Status = "Aprovado", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow },
-                new Order { Id = 3, Status = "Concluído", CreatedAt = DateTime.UtcNow, UpdatedAt = DateTime.UtcNow }
+                new Order {
+                    Id = 1,
+                    Status = "Solicitado",
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                },
+                new Order {
+                    Id = 2,
+                    Status = "Aprovado",
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                },
+                new Order {
+                    Id = 3,
+                    Status = "Concluído",
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                }
             };
 
             _orderRepoMock.Setup(
                 r => r.FindManyAsync(null, null, null)
             ).ReturnsAsync(expectedOrders);
 
-            // Act
+            // A
             var result = await _sut.GetManyAsync();
 
-            // Assert
+            // A
             Assert.Equal(3, result.Count);
             _orderRepoMock.Verify(
                 r => r.FindManyAsync(null, null, null),
@@ -83,7 +108,7 @@ namespace OrdersAppBackend.Tests.Services
         [Fact]
         public async Task CreateAsync_ShouldCreateOrderWithItems_WhenDtoIsValid()
         {
-            // Arrange
+            // A
             var dto = new CreateOrderDto
             {
                 Items = new List<CreateOrderItemDto>
@@ -110,10 +135,10 @@ namespace OrdersAppBackend.Tests.Services
                 .Callback<int, List<OrderItem>>((id, items) => capturedItems = items)
                 .Returns(Task.CompletedTask);
 
-            // Act
+            // A
             var result = await _sut.CreateAsync(dto);
 
-            // Assert
+            // A
             Assert.NotNull(result);
             Assert.Equal("Solicitado", result.Status);
             Assert.NotNull(capturedOrder);
@@ -133,7 +158,7 @@ namespace OrdersAppBackend.Tests.Services
         [Fact]
         public async Task CreateAsync_ShouldCreateOrderWithoutItems_WhenNoItemsProvided()
         {
-            // Arrange
+            // A
             var dto = new CreateOrderDto { Items = null };
             Order? capturedOrder = null;
 
@@ -141,10 +166,10 @@ namespace OrdersAppBackend.Tests.Services
                 .Callback<Order>(o => capturedOrder = o)
                 .Returns(Task.CompletedTask);
 
-            // Act
+            // A
             var result = await _sut.CreateAsync(dto);
 
-            // Assert
+            // A
             Assert.NotNull(result);
             Assert.Equal("Solicitado", result.Status);
             Assert.NotNull(capturedOrder);
@@ -158,7 +183,7 @@ namespace OrdersAppBackend.Tests.Services
         [Fact]
         public async Task GetByIdAsync_ShouldReturnOrder_WhenOrderExists()
         {
-            // Arrange
+            // A
             var order = new Order
             {
                 Id = 1,
@@ -169,10 +194,10 @@ namespace OrdersAppBackend.Tests.Services
 
             _orderRepoMock.Setup(r => r.FindFirstByIdAsync(1)).ReturnsAsync(order);
 
-            // Act
+            // A
             var result = await _sut.GetByIdAsync(1);
 
-            // Assert
+            // A
             Assert.NotNull(result);
             Assert.Equal(1, result.Id);
             Assert.Equal("Solicitado", result.Status);
@@ -181,22 +206,22 @@ namespace OrdersAppBackend.Tests.Services
         [Fact]
         public async Task GetByIdAsync_ShouldReturnNull_WhenOrderDoesNotExist()
         {
-            // Arrange
+            // A
             _orderRepoMock.Setup(
                 r => r.FindFirstByIdAsync(It.IsAny<int>())
             ).ReturnsAsync((Order?)null);
 
-            // Act
+            // A
             var result = await _sut.GetByIdAsync(99);
 
-            // Assert
+            // A
             Assert.Null(result);
         }
 
         [Fact]
         public async Task UpdateAsync_ShouldUpdateOrder_WhenOrderExists()
         {
-            // Arrange
+            // A
             var existingOrder = new Order
             {
                 Id = 1,
@@ -213,10 +238,10 @@ namespace OrdersAppBackend.Tests.Services
                 .Callback<Order>(o => updatedOrder = o)
                 .Returns(Task.CompletedTask);
 
-            // Act
+            // A
             var result = await _sut.UpdateAsync(1, dto);
 
-            // Assert
+            // A
             Assert.NotNull(result);
             Assert.Equal("Aprovado", result.Status);
             Assert.NotNull(updatedOrder);
@@ -227,16 +252,16 @@ namespace OrdersAppBackend.Tests.Services
         [Fact]
         public async Task UpdateAsync_ShouldReturnNull_WhenOrderDoesNotExist()
         {
-            // Arrange
+            // A
             var dto = new UpdateOrderDto { Status = "Aprovado" };
             _orderRepoMock.Setup(
                 r => r.FindFirstByIdAsync(It.IsAny<int>())
             ).ReturnsAsync((Order?)null);
 
-            // Act
+            // A
             var result = await _sut.UpdateAsync(99, dto);
 
-            // Assert
+            // A
             Assert.Null(result);
             _orderRepoMock.Verify(
                 r => r.UpdateAsync(It.IsAny<Order>()),
@@ -247,7 +272,7 @@ namespace OrdersAppBackend.Tests.Services
         [Fact]
         public async Task DeleteAsync_ShouldReturnTrue_WhenOrderExists()
         {
-            // Arrange
+            // A
             var order = new Order
             {
                 Id = 1,
@@ -258,10 +283,10 @@ namespace OrdersAppBackend.Tests.Services
 
             _orderRepoMock.Setup(r => r.FindFirstByIdAsync(1)).ReturnsAsync(order);
 
-            // Act
+            // A
             var result = await _sut.DeleteAsync(1);
 
-            // Assert
+            // A
             Assert.True(result);
             _orderRepoMock.Verify(r => r.RemoveAsync(order), Times.Once);
         }
@@ -269,15 +294,15 @@ namespace OrdersAppBackend.Tests.Services
         [Fact]
         public async Task DeleteAsync_ShouldReturnFalse_WhenOrderDoesNotExist()
         {
-            // Arrange
+            // A
             _orderRepoMock.Setup(
                 r => r.FindFirstByIdAsync(It.IsAny<int>())
             ).ReturnsAsync((Order?)null);
 
-            // Act
+            // A
             var result = await _sut.DeleteAsync(99);
 
-            // Assert
+            // A
             Assert.False(result);
             _orderRepoMock.Verify(
                 r => r.RemoveAsync(It.IsAny<Order>()),
