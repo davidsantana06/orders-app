@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
-import { Order, CreateOrderDto, UpdateOrderDto, OrderFilter } from '../models';
-import { handleHttpError } from '../utils/http-error-handler';
+import { Order, CreateOrderDto, OrderFilter } from '../models';
+import { handleHttpError } from '../utils';
 
 @Injectable({
   providedIn: 'root',
@@ -25,16 +25,8 @@ export class OrderService {
     return this.http.get<Order[]>(this.apiUrl, { params }).pipe(catchError(handleHttpError));
   }
 
-  getById(id: number): Observable<Order> {
-    return this.http.get<Order>(`${this.apiUrl}/${id}`).pipe(catchError(handleHttpError));
-  }
-
   create(dto: CreateOrderDto): Observable<Order> {
     return this.http.post<Order>(this.apiUrl, dto).pipe(catchError(handleHttpError));
-  }
-
-  update(id: number, dto: UpdateOrderDto): Observable<Order> {
-    return this.http.put<Order>(`${this.apiUrl}/${id}`, dto).pipe(catchError(handleHttpError));
   }
 
   delete(id: number): Observable<void> {

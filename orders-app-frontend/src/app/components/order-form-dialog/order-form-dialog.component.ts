@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormArray, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { MatDialogRef, MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -49,7 +49,6 @@ export class OrderFormDialogComponent implements OnInit {
   private readonly dialogRef = inject(MatDialogRef<OrderFormDialogComponent>);
   private readonly orderService = inject(OrderService);
   private readonly snackBar = inject(MatSnackBar);
-  private readonly data = inject(MAT_DIALOG_DATA, { optional: true });
 
   orderForm!: FormGroup;
 

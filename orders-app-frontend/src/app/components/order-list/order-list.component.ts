@@ -227,7 +227,7 @@ export class OrderListComponent implements OnInit {
     }[status];
   }
 
-  getItemSubtotal(item: OrderItem): number {
+  calculateSubtotal(item: OrderItem): number {
     return item.quantity * item.unitPrice;
   }
 
